@@ -3,7 +3,6 @@
 [![Ansible Role](https://img.shields.io/ansible/role/20311?style=flat-square)](https://galaxy.ansible.com/TypistTech/trellis-newrelic-php)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/TypistTech/trellis-newrelic-php?style=flat-square)](https://github.com/TypistTech/trellis-newrelic-php/releases)
 [![Ansible Role](https://img.shields.io/ansible/role/d/20311?style=flat-square)](https://galaxy.ansible.com/TypistTech/trellis-newrelic-php)
-[![CircleCI](https://circleci.com/gh/TypistTech/trellis-newrelic-php.svg?style=svg)](https://circleci.com/gh/TypistTech/trellis-newrelic-php)
 [![Ansible Quality Score](https://img.shields.io/ansible/quality/20311?style=flat-square)](https://galaxy.ansible.com/TypistTech/trellis-newrelic-php)
 [![GitHub](https://img.shields.io/github/license/TypistTech/trellis-newrelic-php.svg)](https://github.com/TypistTech/trellis-newrelic-php/blob/master/LICENSE.md)
 [![GitHub Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa)](https://github.com/sponsors/TangRufus)
@@ -11,35 +10,6 @@
 [![Hire Typist Tech](https://img.shields.io/badge/Hire-Typist%20Tech-ff69b4.svg)](https://typist.tech/contact/)
 [![Twitter Follow @TangRufus](https://img.shields.io/twitter/follow/TangRufus?style=flat-square&color=1da1f2)](https://twitter.com/tangrufus)
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-
-- [Role Variables](#role-variables)
-- [Hacking Trellis' Playbook](#hacking-trellis-playbook)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Common Errors](#common-errors)
-  - [`vault_newrelic_license` is not defined](#vault_newrelic_license-is-not-defined)
-  - [New Relic merges multiple environments into single application](#new-relic-merges-multiple-environments-into-single-application)
-  - [Error after upgrading PHP version](#error-after-upgrading-php-version)
-- [Limitations](#limitations)
-- [FAQs](#faqs)
-  - [It looks awesome. Where can I find some more goodies like this?](#it-looks-awesome-where-can-i-find-some-more-goodies-like-this)
-  - [This package isn't on wp.org. Where can I give a :star::star::star::star::star: review?](#this-package-isnt-on-wporg-where-can-i-give-a-starstarstarstarstar-review)
-- [Sponsoring :heart:](#sponsoring-heart)
-  - [GitHub Sponsors Matching Fund](#github-sponsors-matching-fund)
-  - [Why don't you hire me?](#why-dont-you-hire-me)
-  - [Want to help in other way? Want to be a sponsor?](#want-to-help-in-other-way-want-to-be-a-sponsor)
-- [Running the Tests](#running-the-tests)
-- [Feedback](#feedback)
-- [Change log](#change-log)
-- [Security](#security)
-- [Credits](#credits)
-- [Contributing](#contributing)
-- [License](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 Install [New Relic PHP agent](https://docs.newrelic.com/docs/agents/php-agent) on [Trellis](https://github.com/roots/trellis) servers.
 
@@ -97,14 +67,15 @@ Add this role to `dev.yml` and `server.yml` **immediately after** `role: php`:
 
 ## Installation
 
-Add this role to `requirements.yml`:
+Add this role to `galaxy.yml`:
 
 ```yaml
 - src: TypistTech.trellis-newrelic-php # Case-sensitive!
   version: XXX.YYY.ZZZ # Check for latest version!
 ```
 
-Run `$ ansible-galaxy install -r requirements.yml` to install this new role.
+Run `$ trellis galaxy install` to install this new role.
+
 
 ## Multiple servers
 
@@ -131,7 +102,7 @@ newrelic_config:
 
 ### Error after upgrading PHP version
 
-New Relic would fail and causes provision end up in errors when upgrading PHP minor releases (e.g: from 7.3 to 7.4).
+New Relic would fail and causes provision end up in errors when upgrading PHP major or minor releases (e.g: from 7.4 to 8.0, from 8.0 to 8.1).
 ```
 non-zero return code
 PHP Warning:  PHP Startup: Unable to load dynamic library 'newrelic.so'
@@ -141,16 +112,16 @@ cannot open shared object file: No such file or directory),
 cannot open shared object file: No such file or directory)) in Unknown on
 ```
 
-After PHP minor release upgrade (i.e: when you see the above error):
+After each PHP major or minor release upgrade (i.e: when you see the above error):
 ```bash
+# For multi-server setups, perform the following steps on each server.
 ssh admin@123.456.789
 sudo newrelic-install install
 sudo reboot
 
-# Wait for server reboot and then re-provision
+# Wait for the server(s) to reboot and then re-provision
+# For multi-server setups, you only need to re-provision once only
 trellis provision production
-# Alternatively
-ansible-playbook server.yml -e env=production
 ```
 
 ## Limitations
@@ -202,24 +173,11 @@ Ready to take freelance WordPress jobs. Contact me via the contact form [here](h
 
 Contact: [Tang Rufus](mailto:tangrufus@gmail.com)
 
-## Running the Tests
-
-Run the tests:
-
-``` bash
-ansible-playbook -i 'localhost,' --syntax-check tests/test.yml
-ansible-lint tests/test.yml
-```
-
 ## Feedback
 
 **Please provide feedback!** We want to make this library useful in as many projects as possible.
 Please submit an [issue](https://github.com/TypistTech/trellis-newrelic-php/issues/new) and point out what you do and don't like, or fork the project and make suggestions.
 **No issue is too small.**
-
-## Change log
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 ## Security
 
