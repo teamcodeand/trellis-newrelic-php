@@ -4,5 +4,5 @@
     msg: vault_newrelic_license is not defined
   when: vault_newrelic_license is not defined
 
-- include: install.yml
-- include: ini.yml
+- include_tasks: install.yml
+- include_tasks: ini.yml
